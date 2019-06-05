@@ -14,7 +14,7 @@ Actual time needed to complete: 1 hour, 22 minutes
 
 Number and name of feature: feature 2 filter images
 
-Estimate of time needed to complete: 1 hour
+Estimate of time needed to complete: 1.5 hours
 
 Start time: 11am
 

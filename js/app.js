@@ -1,6 +1,7 @@
 function startApp(){
 
   loadData();
+  // dropMenu();
 
   //   attachListeners();
 
@@ -28,16 +29,47 @@ function displayPage(hornPic) {
     $newHorn.find('#hornQuantity').text(horn.horns);
     $newHorn.removeClass('photo-template');
 
-    $('.hornPic').append($newHorn)
+    $('.hornPic').append($newHorn);
+
+
   });
 }
+
+let dropdown = $('#drop-down-menu');
+dropdown.empty();
+
+dropdown.append('<option selected="true" disabled> Choose Something');
+dropdown.prop('selectedIndex', 0);
+
+const url = 'data/page-1.json';
+$.getJSON(url, function (data){
+  $.each(data, function (key, entry) {
+    dropdown.append($('<option></option>').attr('value', entry.default).text(entry.keyword));
+  });
+});
+
+// const myKeyword =
+// function dropMenu(keywordList) {
+//   // const keywordArray = [];
+
+//   keywordList.forEach(horn => {
+//     const $newKeyword = $('.dropMenu').clone();
+
+//     $newKeyword.find('select').text(horn.keyword);
+//     $newKeyword.removeClass('dropMenu');
+
+//     $('.dropMenu').append($newKeyword);
+//   })
+// }
 
 // function attachListeners() {
 //   $('input').on('change', event => {
 //     const $choice = $(event.target);
 //     const type =$choice.val();
 
-//     if (type === '')
+//     if (value === 'default'){
+
+//     }
 //   })
 // }
 
