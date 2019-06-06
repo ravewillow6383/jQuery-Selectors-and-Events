@@ -1,16 +1,14 @@
+
+
 function startApp(){
-
   loadData();
-  // dropMenu();
 
-  //   attachListeners();
-
+  attachListeners();
 }
 
 function loadData(){
 
-  const success = hornPic => displayPage(hornPic);
-
+  const success = hornObj => displayPage(hornObj);
   const failure = error => console.error(error);
 
   $.get('data/page-1.json', 'json')
@@ -18,59 +16,59 @@ function loadData(){
     .catch(failure);
 }
 
-function displayPage(hornPic) {
-
-  hornPic.forEach(horn => {
+function displayPage(hornObj) {
+  dropMenu(hornObj);
+  hornObj.forEach(horn => {
     const $newHorn = $('.photo-template').clone();
-
-    $newHorn.find('h2').text(horn.title);
     $newHorn.find('img').attr('src', horn.image_url);
-    $newHorn.find('#description').text(horn.description);
-    $newHorn.find('#hornQuantity').text(horn.horns);
+    $newHorn.find('h2').text(horn.title);
+    $newHorn.find('p').text(horn.description);
+    $newHorn.find('.horns').text(horn.horns);
     $newHorn.removeClass('photo-template');
+    $newHorn.find('select').text(horn.keyword);
+    $newHorn.attr('data-type', horn.keyword);
 
-    $('.hornPic').append($newHorn);
-
+    $('.hornObj').append($newHorn);
 
   });
 }
 
-let dropdown = $('#drop-down-menu');
-dropdown.empty();
+function dropMenu(keywordList) {
+  const keywordArray = [];
 
-dropdown.append('<option selected="true" disabled> Choose Something');
-dropdown.prop('selectedIndex', 0);
-
-const url = 'data/page-1.json';
-$.getJSON(url, function (data){
-  $.each(data, function (key, entry) {
-    dropdown.append($('<option></option>').attr('value', entry.default).text(entry.keyword));
+  keywordList.forEach((horn) => {
+    if(!keywordArray.includes(horn.keyword)){
+      keywordArray.push(horn.keyword);
+    }
   });
-});
 
-// const myKeyword =
-// function dropMenu(keywordList) {
-//   // const keywordArray = [];
 
-//   keywordList.forEach(horn => {
-//     const $newKeyword = $('.dropMenu').clone();
+  keywordArray.forEach((keywordInfo)=> {
+    const $markup = `<option value="${keywordInfo}">${keywordInfo}</option>`;
+    $('#drop-down-menu').append($markup);
 
-//     $newKeyword.find('select').text(horn.keyword);
-//     $newKeyword.removeClass('dropMenu');
+  });
 
-//     $('.dropMenu').append($newKeyword);
-//   })
-// }
 
-// function attachListeners() {
-//   $('input').on('change', event => {
-//     const $choice = $(event.target);
-//     const type =$choice.val();
+  // $('#drop-down-menu').on('change', attachListeners);
+}
 
-//     if (value === 'default'){
 
-//     }
-//   })
-// }
+
+function attachListeners(){
+
+  $('select').on('change', event =>{
+    const $choice = $(event.target);
+    const value = $choice.val();
+
+    console.log('value', value);
+    $('section').hide();
+
+    $(`section[data-type="${value}"]`).show();
+
+    // console.log('select sections', $('section').attr('data-type', value));
+
+  })
+}
 
 $(startApp);
